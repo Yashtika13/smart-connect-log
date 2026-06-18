@@ -39,7 +39,7 @@ public class AttendanceController {
     }
 
     @GetMapping("/by-date")
-    @PreAuthorize("hasAnyRole('ADMIN','FACULTY')")
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
     public List<AttendanceResponse> byDate(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         return attendanceService.allForDate(date);
     }

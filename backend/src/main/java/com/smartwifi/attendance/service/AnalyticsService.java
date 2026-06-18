@@ -23,7 +23,7 @@ public class AnalyticsService {
         LocalDate today = LocalDate.now();
         long total = userRepository.count();
         long students = userRepository.countByRole(Role.STUDENT);
-        long faculty = userRepository.countByRole(Role.FACULTY);
+        long staff = userRepository.countByRole(Role.STAFF);
         long present = attendanceRepository.countByAttendanceDateAndStatus(today, AttendanceStatus.PRESENT);
         long late = attendanceRepository.countByAttendanceDateAndStatus(today, AttendanceStatus.LATE);
         long leave = attendanceRepository.countByAttendanceDateAndStatus(today, AttendanceStatus.ON_LEAVE);
@@ -45,7 +45,7 @@ public class AnalyticsService {
         }
 
         return DashboardStats.builder()
-                .totalUsers(total).totalStudents(students).totalFaculty(faculty)
+                .totalUsers(total).totalStudents(students).totalFaculty(staff)
                 .presentToday(present).absentToday(absent).lateToday(late).onLeaveToday(leave)
                 .attendanceRate(Math.round(rate * 100.0) / 100.0)
                 .last7Days(series).presentByDepartment(byDept).build();
