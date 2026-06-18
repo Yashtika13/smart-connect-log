@@ -45,7 +45,7 @@ public class AnalyticsService {
         }
 
         return DashboardStats.builder()
-                .totalUsers(total).totalStudents(students).totalFaculty(faculty)
+                .totalUsers(total).totalStudents(students).totalFaculty(staff)
                 .presentToday(present).absentToday(absent).lateToday(late).onLeaveToday(leave)
                 .attendanceRate(Math.round(rate * 100.0) / 100.0)
                 .last7Days(series).presentByDepartment(byDept).build();
