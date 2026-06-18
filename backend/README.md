@@ -93,42 +93,42 @@ All non-public endpoints require `Authorization: Bearer <jwt>`.
 
 ## Frontend integration (TanStack / React)
 
-The existing frontend currently uses mock data from `src/lib/mock-data.ts`.
-To switch to this backend, create an API client:
+The frontend is already wired to this backend through a typed API layer:
 
-```ts
-// src/lib/api.ts
-const BASE = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080/api";
-
-export function getToken() { return localStorage.getItem("jwt"); }
-export function setToken(t: string) { localStorage.setItem("jwt", t); }
-
-export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
-  const res = await fetch(`${BASE}${path}`, {
-    ...init,
-    headers: {
-      "Content-Type": "application/json",
-      ...(getToken() ? { Authorization: `Bearer ${getToken()}` } : {}),
-      ...(init.headers || {}),
-    },
-  });
-  if (!res.ok) throw new Error((await res.json()).message ?? res.statusText);
-  return res.json();
-}
+```
+src/lib/api/
+  client.ts       fetch wrapper + JWT token store + ApiError
+  auth.ts         login / register / logout
+  attendance.ts   check-in / check-out / history
+  leave.ts        request / approve / reject
+  device.ts       MAC registration & verification
+  analytics.ts    dashboard KPIs
+src/lib/auth-context.tsx   React context: user, role, signIn/out, hasRole
 ```
 
-Then replace mock-data reads with real calls, e.g.:
-```ts
-const { token } = await api<{ token: string }>("/auth/login",
-  { method: "POST", body: JSON.stringify({ usernameOrEmail, password }) });
-setToken(token);
+Pages use TanStack Query (`useQuery` / `useMutation`) with loading + error UI.
+`_app/route.tsx` is the protected layout — it redirects to `/login` when no
+JWT is present and exposes role-based UI (e.g. STAFF/ADMIN see "Pending
+Approvals" on the Leave page).
 
-const history = await api<Attendance[]>("/attendance/me");
-const stats = await api<DashboardStats>("/analytics/dashboard");
-```
+### Steps to run end-to-end
 
-Add `VITE_API_BASE_URL=http://localhost:8080/api` to your `.env` and ensure the
-backend's `app.cors.allowed-origins` includes your frontend origin.
+1. Start MySQL and run `backend/sql/schema.sql` (creates DB + tables + seed admin).
+2. `cd backend && mvn spring-boot:run` — API on `http://localhost:8080/api`.
+3. In the frontend project root, copy `.env.example` to `.env`:
+   ```
+   VITE_API_BASE_URL=http://localhost:8080/api
+   ```
+4. Ensure `app.cors.allowed-origins` in `application.properties` contains
+   your frontend origin (default already includes `http://localhost:5173`).
+5. Start the frontend dev server. Visit `/login`, sign in with the seeded
+   admin (`admin` / `admin123` from `schema.sql`) or a registered user.
+
+### Roles
+
+`ADMIN`, `STAFF`, `STUDENT` — enforced both server-side (`@PreAuthorize`)
+and client-side via `useAuth().hasRole(...)` for conditional UI.
+
 
 ## Production checklist
 
