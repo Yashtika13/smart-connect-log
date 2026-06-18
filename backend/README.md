@@ -71,14 +71,14 @@ POST /api/auth/register
 | POST   | /attendance/check-in              | User         | Wi-Fi + device verified check-in     |
 | POST   | /attendance/check-out             | User         | Mark check-out                       |
 | GET    | /attendance/me                    | User         | My attendance history                |
-| GET    | /attendance/by-date?date=...      | FACULTY/ADM  | Daily attendance sheet               |
+| GET    | /attendance/by-date?date=...      | STAFF/ADM  | Daily attendance sheet               |
 | POST   | /leaves                           | User         | Submit leave request                 |
 | GET    | /leaves/me                        | User         | My leave history                     |
-| GET    | /leaves/pending                   | FACULTY/ADM  | Pending requests                     |
-| PATCH  | /leaves/{id}/decision             | FACULTY/ADM  | Approve / reject                     |
+| GET    | /leaves/pending                   | STAFF/ADM  | Pending requests                     |
+| PATCH  | /leaves/{id}/decision             | STAFF/ADM  | Approve / reject                     |
 | GET    | /notifications/me                 | User         | My notifications                     |
 | PATCH  | /notifications/{id}/read          | User         | Mark read                            |
-| GET    | /analytics/dashboard              | FACULTY/ADM  | KPIs + last-7-days series            |
+| GET    | /analytics/dashboard              | STAFF/ADM  | KPIs + last-7-days series            |
 | GET    | /admin/users                      | ADMIN        | List all users                       |
 | PATCH  | /admin/users/{id}/toggle          | ADMIN        | Enable / disable user                |
 

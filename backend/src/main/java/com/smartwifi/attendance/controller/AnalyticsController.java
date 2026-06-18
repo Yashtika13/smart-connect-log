@@ -14,6 +14,6 @@ public class AnalyticsController {
     private final AnalyticsService analyticsService;
 
     @GetMapping("/dashboard")
-    @PreAuthorize("hasAnyRole('ADMIN','FACULTY')")
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
     public DashboardStats dashboard() { return analyticsService.dashboard(); }
 }

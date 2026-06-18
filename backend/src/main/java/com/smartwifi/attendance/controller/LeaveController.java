@@ -29,11 +29,11 @@ public class LeaveController {
     }
 
     @GetMapping("/pending")
-    @PreAuthorize("hasAnyRole('ADMIN','FACULTY')")
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
     public List<LeaveResponse> pending() { return leaveService.pending(); }
 
     @PatchMapping("/{id}/decision")
-    @PreAuthorize("hasAnyRole('ADMIN','FACULTY')")
+    @PreAuthorize("hasAnyRole('ADMIN','STAFF')")
     public LeaveResponse decide(@AuthenticationPrincipal UserPrincipal p,
                                 @PathVariable Long id, @Valid @RequestBody LeaveDecision decision) {
         return leaveService.decide(id, p.getId(), decision);

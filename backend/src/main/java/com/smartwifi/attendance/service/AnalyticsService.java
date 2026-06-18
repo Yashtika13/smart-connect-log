@@ -23,7 +23,7 @@ public class AnalyticsService {
         LocalDate today = LocalDate.now();
         long total = userRepository.count();
         long students = userRepository.countByRole(Role.STUDENT);
-        long faculty = userRepository.countByRole(Role.FACULTY);
+        long staff = userRepository.countByRole(Role.STAFF);
         long present = attendanceRepository.countByAttendanceDateAndStatus(today, AttendanceStatus.PRESENT);
         long late = attendanceRepository.countByAttendanceDateAndStatus(today, AttendanceStatus.LATE);
         long leave = attendanceRepository.countByAttendanceDateAndStatus(today, AttendanceStatus.ON_LEAVE);

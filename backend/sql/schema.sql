@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(255) NOT NULL,
     full_name VARCHAR(120),
     department VARCHAR(80),
-    role ENUM('STUDENT','FACULTY','ADMIN') NOT NULL,
+    role ENUM('STUDENT','STAFF','ADMIN') NOT NULL,
     enabled BOOLEAN NOT NULL DEFAULT TRUE,
     created_at DATETIME NOT NULL
 );
